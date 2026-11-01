@@ -1,0 +1,207 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Muskan's Birthday Surprise 💖</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg,#ffd6e9,#f8b4d9,#d8b4fe);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  color: #7c285e;
+}
+.card {
+  background: rgba(255,255,255,.88);
+  border-radius: 28px;
+  padding: 32px 22px;
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 12px 35px #a83c7c33;
+}
+h1 { font-size: 32px; }
+h2 { font-size: 25px; line-height: 1.4; }
+p { font-size: 18px; line-height: 1.7; }
+.emoji { font-size: 65px; margin: 20px 0; }
+button {
+  display: block;
+  width: 100%;
+  padding: 18px;
+  margin: 14px 0;
+  border: 0;
+  border-radius: 18px;
+  background: #ec4899;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 5px 12px #ec489944;
+}
+button:active { transform: scale(.97); }
+.option {
+  background: white;
+  color: #a83279;
+  border: 2px solid #f9a8d4;
+  text-align: left;
+}
+.progress {
+  font-size: 15px;
+  color: #9d5880;
+  margin-bottom: 20px;
+}
+.hidden { display: none; }
+.heart {
+  position: fixed;
+  font-size: 24px;
+  pointer-events: none;
+  animation: floatUp 3s linear forwards;
+}
+@keyframes floatUp {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-250px); opacity: 0; }
+}
+</style>
+</head>
+<body>
+
+<div class="card" id="welcome">
+  <div class="emoji">🎁💖🎈</div>
+  <h1>Hey Muskan! 💕</h1>
+  <p>Someone has prepared a little birthday adventure just for you!</p>
+  <p>Answer four fun questions to unlock your special surprise.</p>
+  <button onclick="startQuiz()">Open Your Surprise 💌</button>
+</div>
+
+<div class="card hidden" id="quiz">
+  <div class="progress" id="progress"></div>
+  <div class="emoji">💌</div>
+  <h2 id="question"></h2>
+  <div id="options"></div>
+</div>
+
+<div class="card hidden" id="final">
+  <div class="emoji">🎂🎉💖</div>
+  <h1>Happy Birthday, Muskan! 💕</h1>
+  <p>
+    You deserve all the happiness, love, laughter,
+    and beautiful surprises in the world.
+  </p>
+  <p>
+    May every wish in your heart come true,
+    and may your smile shine brighter every day.
+  </p>
+  <h2>Stay happy, stay magical! ✨❤️</h2>
+  <p>🌹🎁🎈💐</p>
+  <button onclick="restart()">Play Again 🎁</button>
+</div>
+
+<script>
+const questions = [
+  {
+    q: "Hey Muskan! 💖 Are you ready for your birthday surprise?",
+    options: [
+      "Yes! 😍",
+      "Of course! 🥳",
+      "I'm super excited! 💕"
+    ]
+  },
+  {
+    q: "What would make your birthday magical? ✨",
+    options: [
+      "Lots of love ❤️",
+      "A beautiful surprise 🎁",
+      "All my dreams coming true 🌸"
+    ]
+  },
+  {
+    q: "Choose your birthday gift! 🎀",
+    options: [
+      "A thousand roses 🌹",
+      "Unlimited hugs 🤗",
+      "A magical wish 🌟"
+    ]
+  },
+  {
+    q: "One last question... ready to see your special message? 💌",
+    options: [
+      "Open my surprise! 💝",
+      "Yes please! 🎂",
+      "Show me! 🥹"
+    ]
+  }
+];
+
+let current = 0;
+let answers = [];
+
+function show(id) {
+  ["welcome","quiz","final"].forEach(x => {
+    document.getElementById(x).classList.add("hidden");
+  });
+  document.getElementById(id).classList.remove("hidden");
+}
+
+function startQuiz() {
+  current = 0;
+  answers = [];
+  show("quiz");
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const item = questions[current];
+  document.getElementById("progress").textContent =
+    "Question " + (current + 1) + " of " + questions.length;
+  document.getElementById("question").textContent = item.q;
+
+  const container = document.getElementById("options");
+  container.innerHTML = "";
+
+  item.options.forEach(answer => {
+    const button = document.createElement("button");
+    button.className = "option";
+    button.textContent = answer + "  →";
+    button.onclick = () => {
+      answers.push(answer);
+      current++;
+      if (current < questions.length) {
+        renderQuestion();
+      } else {
+        show("final");
+        celebrate();
+      }
+    };
+    container.appendChild(button);
+  });
+}
+
+function celebrate() {
+  for (let i = 0; i < 35; i++) {
+    setTimeout(() => {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.textContent = ["💖","🎉","🌸","💕","✨"][Math.floor(Math.random()*5)];
+      heart.style.left = Math.random()*90 + "vw";
+      heart.style.top = (65 + Math.random()*30) + "vh";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 3000);
+    }, i * 100);
+  }
+}
+
+function restart() {
+  current = 0;
+  answers = [];
+  show("welcome");
+}
+</script>
+</body>
+</html>
